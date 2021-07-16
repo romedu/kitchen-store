@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Card, Page, ResourceList } from "@shopify/polaris";
 import ProductModal from "./components/ProductModal";
 import ProductThumbnail from "./components/ProductThumbnail";
@@ -6,23 +6,38 @@ import useFetch from "./hooks/useFetch";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
+  const [pageNum, setPageNum] = useState(1);
+  const [paginationData, setPaginationData] = useState({});
   const [selectedProductId, setSelectedProductId] = useState(null);
-  const [isLoading, fetchProducts] = useFetch("/api/products");
+  const [isLoading, fetchProducts] = useFetch(`/api/products?page=${pageNum}`);
   const clearSelectedProductId = () => setSelectedProductId(null);
+  const navToPage = (pageToNavigate) => setPageNum(pageToNavigate);
+  const navToNextPage = useCallback(() => navToPage(pageNum + 1), [pageNum]);
+  const navToPrevPage = useCallback(() => navToPage(pageNum - 1), [pageNum]);
   const resourceName = {
     singular: "product",
     plural: "products",
   };
+  const paginationOptions = {
+    hasPrevious: paginationData.hasPrevPage,
+    hasNext: paginationData.hasNextPage,
+    label: `Page ${pageNum} of ${paginationData.totalPages}`,
+    onNext: navToNextPage,
+    onPrevious: navToPrevPage,
+  };
 
   useEffect(() => {
-    const successfulFetchHandler = (data) => setProducts(data.products);
+    const successfulFetchHandler = (data) => {
+      setProducts(data.products);
+      setPaginationData(data.paginationData);
+    };
     const failedFetchHandler = (err) => console.log("err", err);
 
     fetchProducts(null, successfulFetchHandler, failedFetchHandler);
-  }, []);
+  }, [pageNum]);
 
   return (
-    <Page title="Products" divider>
+    <Page title="Products" pagination={paginationOptions} divider>
       <Card>
         <ResourceList
           resourceName={resourceName}
