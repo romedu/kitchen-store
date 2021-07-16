@@ -1,12 +1,19 @@
 import Product from "../models/Product";
 
 export const getProducts = async (ctx) => {
-  const fieldsToReturn = "_id name price image";
-  const products = await Product.find({}, fieldsToReturn);
+  const { page = 1 } = ctx.request.query;
+  const paginationOptions = {
+    page,
+    limit: 5,
+    select: ["_id", "name", "price", "image"],
+  };
+  const queryResult = await Product.paginate({}, paginationOptions);
+  const { docs: products, ...paginationData } = queryResult;
 
   ctx.status = 200;
   ctx.body = {
     products,
+    paginationData,
   };
 };
 
