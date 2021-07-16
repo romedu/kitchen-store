@@ -1,19 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Page, ResourceList } from "@shopify/polaris";
 import ProductModal from "./components/ProductModal";
 import ProductThumbnail from "./components/ProductThumbnail";
 import useFetch from "./hooks/useFetch";
+import usePagination from "./hooks/usePagination";
+import useClearableState from "./hooks/useClearableState";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
-  const [pageNum, setPageNum] = useState(1);
   const [paginationData, setPaginationData] = useState({});
-  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [pageNum, navToNextPage, navToPrevPage] = usePagination();
+  const [selectedProductId, setSelectedProductId, clearSelectedProductId] = useClearableState();
   const [isLoading, fetchProducts] = useFetch(`/api/products?page=${pageNum}`);
-  const clearSelectedProductId = () => setSelectedProductId(null);
-  const navToPage = (pageToNavigate) => setPageNum(pageToNavigate);
-  const navToNextPage = useCallback(() => navToPage(pageNum + 1), [pageNum]);
-  const navToPrevPage = useCallback(() => navToPage(pageNum - 1), [pageNum]);
   const resourceName = {
     singular: "product",
     plural: "products",
