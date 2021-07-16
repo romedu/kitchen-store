@@ -5,12 +5,14 @@ import ProductThumbnail from "./components/ProductThumbnail";
 import useFetch from "./hooks/useFetch";
 import usePagination from "./hooks/usePagination";
 import useClearableState from "./hooks/useClearableState";
+import ErrorModal from "./components/ErrorModal";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
   const [paginationData, setPaginationData] = useState({});
   const [pageNum, navToNextPage, navToPrevPage] = usePagination();
   const [selectedProductId, setSelectedProductId, clearSelectedProductId] = useClearableState();
+  const [errorMessage, setErrorMessage, clearErrorMessage] = useClearableState();
   const [isLoading, fetchProducts] = useFetch(`/api/products?page=${pageNum}`);
   const { totalPages = pageNum } = paginationData;
   const resourceName = {
@@ -30,7 +32,10 @@ const Index = () => {
       setProducts(data.products);
       setPaginationData(data.paginationData);
     };
-    const failedFetchHandler = (err) => console.log("err", err);
+    const failedFetchHandler = ({ message }) => {
+      setErrorMessage(message);
+      setPaginationData({});
+    }
 
     fetchProducts(null, successfulFetchHandler, failedFetchHandler);
   }, [pageNum]);
@@ -55,6 +60,7 @@ const Index = () => {
             closeHandler={clearSelectedProductId}
           />
         )}
+        {errorMessage && <ErrorModal message={errorMessage} closeHandler={clearErrorMessage} />}
       </Card>
     </Page>
   );
