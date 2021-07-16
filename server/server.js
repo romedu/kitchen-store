@@ -6,6 +6,7 @@ import Shopify, { ApiVersion } from "@shopify/shopify-api";
 import Koa from "koa";
 import next from "next";
 import Router from "koa-router";
+import { STATUS_CODES } from "http";
 import "./models/db";
 import * as productsController from "./controllers/Product";
 
@@ -101,6 +102,14 @@ app.prepare().then(async () => {
     } else {
       await handleRequest(ctx);
     }
+  });
+
+  // Not Found Handler
+  router.all("(.*)", async (ctx) => {
+    ctx.status = 404;
+    ctx.body = {
+      message: STATUS_CODES[404],
+    };
   });
 
   server.use(router.allowedMethods());
