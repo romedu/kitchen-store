@@ -12,6 +12,7 @@ const Index = () => {
   const [pageNum, navToNextPage, navToPrevPage] = usePagination();
   const [selectedProductId, setSelectedProductId, clearSelectedProductId] = useClearableState();
   const [isLoading, fetchProducts] = useFetch(`/api/products?page=${pageNum}`);
+  const { totalPages = pageNum } = paginationData;
   const resourceName = {
     singular: "product",
     plural: "products",
@@ -19,7 +20,7 @@ const Index = () => {
   const paginationOptions = {
     hasPrevious: paginationData.hasPrevPage,
     hasNext: paginationData.hasNextPage,
-    label: `Page ${pageNum} of ${paginationData.totalPages}`,
+    label: `Page ${pageNum} of ${totalPages}`,
     onNext: navToNextPage,
     onPrevious: navToPrevPage,
   };
