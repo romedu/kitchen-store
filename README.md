@@ -60,6 +60,8 @@ $ npm start
 
 ## Extras
 
+En esta aplicación se decidió utilizar una base de datos no relacional, MongoDB, principalmente porque para el tipo de información que se está almacenando(productos) se suelen hacer cambios frecuentes a su estructura, ejemplo: se decide que ahora se quiere almacenar el peso de un producto. Por otro lado este tipo de base de datos ofrece una mayor facilidad al momento de integrarla con algún tipo de lenguaje de programación moderno, debido a que el formato en la que se almacena suele ser compatible con estos.
+
 En cuanto a los principios de código limpio y patrones de diseños aplicados, podemos destacar los siguientes:
 
 - Todos los módulos dentro de la carpeta `server` y `pages`, implementan el [Module Pattern](https://en.wikipedia.org/wiki/Module_pattern).
