@@ -7,7 +7,6 @@ import Koa from "koa";
 import next from "next";
 import Router from "koa-router";
 import { STATUS_CODES } from "http";
-import "./models/db";
 import * as productsController from "./controllers/Product";
 
 dotenv.config();
@@ -17,6 +16,9 @@ const app = next({
   dev,
 });
 const handle = app.getRequestHandler();
+
+// Using require to make sure it is executed after next finishes loading the env params
+require("./models/db");
 
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,

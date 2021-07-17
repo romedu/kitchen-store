@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-const { DB_URL } = process.env;
 
 async function initializeDB(db) {
   try {
@@ -10,7 +9,7 @@ async function initializeDB(db) {
       useCreateIndex: true,
     };
 
-    await db.connect(DB_URL, options);
+    await db.connect(process.env.DB_URL, options);
     console.log("Database connection established");
   } catch (error) {
     console.log(`Error: ${error}`);
