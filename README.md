@@ -1,30 +1,71 @@
-# Shopify App Node
+# Kitchen-Store
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
-[![Build Status](https://travis-ci.com/Shopify/shopify-app-node.svg?branch=master)](https://travis-ci.com/Shopify/shopify-app-node)
+Una simple aplicación hecha con Node.js(Koa) y React que está conectada con Shopify. Esta lista el catálogo de productos de una base de datos.
 
-Boilerplate to create an embedded Shopify app made with Node, [Next.js](https://nextjs.org/), [Shopify-koa-auth](https://github.com/Shopify/quilt/tree/master/packages/koa-shopify-auth), [Polaris](https://github.com/Shopify/polaris-react), and [App Bridge React](https://shopify.dev/tools/app-bridge/react-components).
+## Instalación
 
-## Installation
-
-Using the [Shopify-App-CLI](https://github.com/Shopify/shopify-app-cli) run:
+Clonar el repositorio:
 
 ```sh
-~/ $ shopify node create -n APP_NAME
+$ git clone https://github.com/romedu/kitchen-store.git
 ```
 
-Or, fork and clone repo
+Instalar las dependencias:
 
-## Requirements
+```sh
+$ cd kitchen-store
+$ npm install
+```
 
-- If you don’t have one, [create a Shopify partner account](https://partners.shopify.com/signup).
-- If you don’t have one, [create a Development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) where you can install and test your app.
-- In the Partner dashboard, [create a new app](https://help.shopify.com/en/api/tools/partner-dashboard/your-apps#create-a-new-app). You’ll need this app’s API credentials during the setup process.
+## Requerimientos
 
-## Usage
+Antes de proceder a la ejecución del proyecto es necesario tener en cuenta que para poder correrlo hay que tener una [cuenta de Shopify](https://partners.shopify.com/signup) y una [tienda de desarrollo](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store), asi como tambien las credenciales del API de Shopify encontradas en la [misma](https://help.shopify.com/en/api/tools/partner-dashboard/your-apps#create-a-new-app).
 
-This repository is used by [Shopify-App-CLI](https://github.com/Shopify/shopify-app-cli) as a scaffold for Node apps. You can clone or fork it yourself, but it’s faster and easier to use Shopify App CLI, which handles additional routine development tasks for you.
+**Nota:** En caso de utilizar una tienda ya existente ignorar este paso.
 
-## License
+Otro requerimiento es tener [Node.js](https://nodejs.org), preferiblemente de la versión 10.x.x en adelante.
 
-This respository is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+## Correr el proyecto
+
+Setear las variables de entorno en un archivo .env:
+
+```sh
+SHOPIFY_API_KEY="YOUR_SHOPIFY_API_KEY"
+SHOPIFY_API_SECRET="YOUR_SHOPIFY_SECRET"
+HOST="YOUR_TUNNEL_URL"
+SHOP="my-shop-name.myshopify.com"
+SCOPES=read_products
+DB_URL="YOUR_DATABASE_URL"
+```
+
+**Nota:** Se puede usar el archivo .env.example como referencia
+
+Crear el build con el siguiente comando:
+
+```sh
+$ npm run build
+```
+
+Correr el proyect con el siguiente comando:
+
+```sh
+$ npm start
+```
+
+## Pasos para poder utilizar la aplicación
+
+1. Entrar al portal del administrador de la tienda
+2. En el menu de la izquierda, dar click en la opción de Apps
+3. Elegir y dar click en la aplicación que se desea ejecutar
+
+## Extras
+
+En cuanto a los principios de código limpio y patrones de diseños aplicados, podemos destacar los siguientes:
+
+- Todos los módulos dentro de la carpeta `server` y `pages`, implementan el [Module Pattern](https://en.wikipedia.org/wiki/Module_pattern).
+
+- El hook `useFetch` de la carpeta `pages` se crea con el fin de aplicar el principio de [Dependency inversion](https://en.wikipedia.org/wiki/Dependency_inversion_principle) y se realiza mediante la implementación del [Adapter Pattern](https://en.wikipedia.org/wiki/Adapter_pattern).
+
+## Licencia
+
+Este repositorio está disponible como open source de acuerdo a la licencia [MIT License](https://opensource.org/licenses/MIT).
